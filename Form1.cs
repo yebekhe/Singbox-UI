@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualBasic;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Diagnostics;
@@ -23,7 +23,22 @@ namespace Singboxui_refactored
 
     public partial class Form1 : Form
     {
+        private Dictionary<string, Color[]> themePalettes = new Dictionary<string, Color[]>
+        {
+            ["bluePalette"] = new Color[] { Color.FromArgb(31, 165, 243), Color.FromArgb(25, 135, 198), Color.FromArgb(20, 106, 156), Color.FromArgb(135, 135, 135) },
+            ["redPalette"] = new Color[] { Color.FromArgb(203, 72, 69), Color.FromArgb(176, 61, 59), Color.FromArgb(153, 47, 45), Color.FromArgb(135, 135, 135) },
+            ["yellowPalette"] = new Color[] { Color.FromArgb(221, 198, 0), Color.FromArgb(208, 186, 0), Color.FromArgb(179, 160, 1), Color.FromArgb(135, 135, 135) },
+            ["purplePalette"] = new Color[] { Color.FromArgb(127, 80, 210), Color.FromArgb(110, 69, 182), Color.FromArgb(93, 59, 153), Color.FromArgb(135, 135, 135) },
+            ["bluegrayPalette"] = new Color[] { Color.FromArgb(123, 157, 192), Color.FromArgb(101, 130, 160), Color.FromArgb(84, 108, 134), Color.FromArgb(135, 135, 135) },
+            ["brownPalette"] = new Color[] { Color.FromArgb(141, 110, 99), Color.FromArgb(123, 95, 85), Color.FromArgb(112, 86, 77), Color.FromArgb(135, 135, 135) },
+            ["tealPalette"] = new Color[] { Color.FromArgb(8, 132, 132), Color.FromArgb(6, 118, 118), Color.FromArgb(4, 100, 100), Color.FromArgb(135, 135, 135) },
+            ["orangePalette"] = new Color[] { Color.FromArgb(214, 146, 44), Color.FromArgb(195, 133, 39), Color.FromArgb(176, 120, 35), Color.FromArgb(135, 135, 135) },
+            ["pinkPalette"] = new Color[] { Color.FromArgb(236, 64, 122), Color.FromArgb(213, 57, 110), Color.FromArgb(197, 53, 102), Color.FromArgb(135, 135, 135) }
+        };
 
+        Color[] theme = new Color[4];
+
+        string themeName = Properties.Settings.Default.Theme ?? "bluePalette";
         bool isDarkMode = Properties.Settings.Default.IsDarkMode;
         string language = Properties.Settings.Default.Language;
         private TimersTimer timer;
@@ -84,19 +99,19 @@ namespace Singboxui_refactored
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
-            {
-                Random random = new Random();
-                string fact = randomFacts[random.Next(0, randomFacts.Count)];
-                string message = $"Please run the application as Administrator\n" +
-                                 "I know, we could make the app ask for UAC privilege but that can cause Windows Defender to detect the app as a trojan!\n" +
-                                 "So please run the app as Administrator manually.\n" +
-                                 $"Anyways, here's a random fact:\n\n{fact}\n\n" +
-                                 "-Dave";
+            //if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+            //{
+            //    Random random = new Random();
+            //    string fact = randomFacts[random.Next(0, randomFacts.Count)];
+            //    string message = $"Please run the application as Administrator\n" +
+            //                     "I know, we could make the app ask for UAC privilege but that can cause Windows Defender to detect the app as a trojan!\n" +
+            //                     "So please run the app as Administrator manually.\n" +
+            //                     $"Anyways, here's a random fact:\n\n{fact}\n\n" +
+            //                     "-Dave";
 
-                MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                Environment.Exit(0);
-            }
+            //    MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    Environment.Exit(0);
+            //}
             AdjustMode(isDarkMode);
             AdjustLanguage(string.IsNullOrEmpty(language) ? "english" : language);
             LoadComboBoxItems();
@@ -254,14 +269,16 @@ namespace Singboxui_refactored
         private void AdjustMode(bool isDarkMode)
         {
             this.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
+            themeName = Properties.Settings.Default.Theme ?? "bluePalette";
+            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
 
             foreach (Control c in this.Controls)
             {
                 switch (c)
                 {
                     case Button button:
-                        button.BackColor = isDarkMode ? Color.FromArgb(45, 45, 48) : Color.White;
-                        button.ForeColor = isDarkMode ? Color.White : Color.Black;
+                        button.BackColor = isDarkMode ? theme[0] : theme[0];
+                        button.ForeColor = isDarkMode ? Color.White : Color.White;
                         break;
 
                     case Label label:
@@ -269,11 +286,15 @@ namespace Singboxui_refactored
                         break;
 
                     case TextBox textBox:
-                        textBox.BackColor = isDarkMode ? Color.FromArgb(30, 30, 30) : Color.White;
-                        textBox.ForeColor = isDarkMode ? Color.LightGray : Color.Black;
+                        textBox.BackColor = isDarkMode ? theme[0] : theme[2];
+                        textBox.ForeColor = isDarkMode ? Color.White : Color.White;
                         break;
 
                     default:
+                        break;
+                    case ComboBox comboBox:
+                        comboBox.BackColor = isDarkMode ? theme[0] : theme[2];
+                        comboBox.ForeColor = isDarkMode ? Color.White : Color.White;
                         break;
                 }
             }
@@ -298,6 +319,7 @@ namespace Singboxui_refactored
                "english", new Dictionary<string, string>
                {
                    {"deleteall" , "Delete All"},
+                   {"colors" , "Colors" },
                    {"singboxconnected","User is connected to sing-box."},
                    {"singboxdisconnected","User is NOT connected to sing-box."},
                    { "darkmode", "Dark Mode" },
@@ -335,6 +357,7 @@ namespace Singboxui_refactored
     "persian", new Dictionary<string, string>
                {
                    {"deleteall" , "حذف همه"},
+                   {"colors" , "رنگبندی" },
                    {"appearance" , "ظاهر برنامه" },
                    { "singboxconnected", "اتصال به سینگ باکس برقرار است" },
                    { "singboxdisconnected", "اتصال به سینگ باکس برقرار نیست" },
@@ -373,6 +396,7 @@ namespace Singboxui_refactored
     "russian", new Dictionary<string, string>
                {
                    {"appearance" , "Внешний вид"},
+                   {"colors" , "Цвета" },
                    { "singboxconnected", "Пользователь подключен к sing-box." },
                    { "singboxdisconnected", "Пользователь НЕ подключен к sing-box." },
                    {"darkmode" , "Тёмный режим"},
@@ -411,6 +435,7 @@ namespace Singboxui_refactored
     "chinese", new Dictionary<string, string>
                {
                    {"appearance" , "外观"},
+                   {"colors" , "颜色" },
                    { "singboxconnected", "用户已连接到sing-box。" },
                    { "singboxdisconnected", "用户未连接到sing-box。" },
                    {"darkmode",  "暗黑模式"},
@@ -468,6 +493,7 @@ namespace Singboxui_refactored
 
         {
             toolStripStatusLabel1.Text = "I'm a status bar";
+            colorsToolStripMenuItem.Text = GetLocalizedString(language, "colors");
             label1.Text = "Location | IP :";
             label2.Text = "Updating..";
             button1.Text = GetLocalizedString(language, "refresh");
@@ -526,30 +552,32 @@ namespace Singboxui_refactored
         private async Task UpdateUIBasedOnConnection()
         {
             bool isRunning = await IsSingBoxRunningAsync();
+            themeName = Properties.Settings.Default.Theme ?? "bluePalette";
+            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
             language = Properties.Settings.Default.Language;
             this.Invoke((MethodInvoker)delegate
             {
                 if (isRunning)
                 {
-                    
+
                     button6.Text = GetLocalizedString(Properties.Settings.Default.Language, "disconnect");
                     button6.BackColor = Color.Red;
                     button6.Enabled = true;
                     toolStripStatusLabel1.Text = GetLocalizedString(Properties.Settings.Default.Language, "singboxconnected");
-                    Color[] bluePalette = new Color[] { Color.FromArgb(31, 165, 243), Color.FromArgb(25, 135, 198), Color.FromArgb(20, 106, 156), Color.FromArgb(135, 135, 135) };
+
+
                     button7.Enabled = true;
                     button8.Enabled = true;
-                    StyleButton(button7, bluePalette);
-                    StyleButton(button8, bluePalette);
+                    StyleButton(button7, theme);
+                    StyleButton(button8, theme);
                 }
                 else
                 {
-                    Color[] bluePalette = new Color[] { Color.FromArgb(31, 165, 243), Color.FromArgb(25, 135, 198), Color.FromArgb(20, 106, 156), Color.FromArgb(135, 135, 135) };
                     button6.Text = GetLocalizedString(Properties.Settings.Default.Language, "connect");
                     button7.Enabled = false;
                     button8.Enabled = false;
-                    StyleButton(button7, bluePalette);
-                    StyleButton(button8, bluePalette);
+                    StyleButton(button7, theme);
+                    StyleButton(button8, theme);
                     button6.BackColor = Color.Green;
                     button6.Enabled = true;
                     toolStripStatusLabel1.Text = GetLocalizedString(Properties.Settings.Default.Language, "singboxdisconnected");
@@ -703,7 +731,7 @@ namespace Singboxui_refactored
                     try
                     {
                         process.Kill();
-                        process.WaitForExit(); 
+                        process.WaitForExit();
                         toolStripStatusLabel1.Text = "Disconnected. sing-box.exe is terminated.";
                         processKilled = true;
                     }
@@ -855,6 +883,7 @@ namespace Singboxui_refactored
         {
             if (btn.Enabled)
             {
+                btn.ForeColor = Color.White;
                 btn.BackColor = palette[0];
                 btn.FlatAppearance.MouseOverBackColor = palette[1];
                 btn.FlatAppearance.MouseDownBackColor = palette[2];
@@ -872,21 +901,22 @@ namespace Singboxui_refactored
             lbl.Font = new Font(lbl.Font, FontStyle.Bold);
         }
         private readonly BackgroundWorker backgroundWorker;
-        private readonly string currentVersion = "v" +  Properties.Settings.Default.Version;
+        private readonly string currentVersion = "v" + Properties.Settings.Default.Version;
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            Color[] bluePalette = new Color[] { Color.FromArgb(31, 165, 243), Color.FromArgb(25, 135, 198), Color.FromArgb(20, 106, 156), Color.FromArgb(135, 135, 135) };
-            StyleButton(button1, bluePalette);
-            StyleButton(button2, bluePalette);
+            themeName = Properties.Settings.Default.Theme ?? "bluePalette";
+            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
+            StyleButton(button1, theme);
+            StyleButton(button2, theme);
             // StyleButton(button3, bluePalette);
-            StyleButton(button4, bluePalette);
-            StyleButton(button5, bluePalette);
-            StyleButton(button6, bluePalette);
+            StyleButton(button4, theme);
+            StyleButton(button5, theme);
+            StyleButton(button6, theme);
             button7.Enabled = false;
             button8.Enabled = false;
-            StyleButton(button7, bluePalette);
-            StyleButton(button8, bluePalette);
+            StyleButton(button7, theme);
+            StyleButton(button8, theme);
             StyleLabel(label1);
             StyleLabel(label2);
             StyleLabel(label3);
@@ -1138,5 +1168,74 @@ namespace Singboxui_refactored
                 }
             }
         }
+
+        private void yellowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "yellowPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void blueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "bluePalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void redToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "redPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void purpleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "purplePalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void blueGrayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "bluegrayPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void brownToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "brownPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void tealToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "tealPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void orangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "orangePalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void pinkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Theme = "pinkPalette";
+            Properties.Settings.Default.Save();
+            AdjustMode(isDarkMode);
+        }
+
+        private void colorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
