@@ -433,6 +433,7 @@ namespace Singboxui_refactored
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.White;
             ClientSize = new Size(464, 461);
             Controls.Add(checkBox1);
             Controls.Add(button8);
