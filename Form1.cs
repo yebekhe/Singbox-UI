@@ -115,17 +115,19 @@ namespace Singboxui_refactored
             }
             AdjustLanguage(string.IsNullOrEmpty(language) ? "english" : language);
             themeName = Properties.Settings.Default.Theme ?? "bluePalette";
-            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
-            LoadComboBoxItems();
             this.BackColor = Color.FromArgb(238, 238, 238);
             this.ForeColor = Color.FromArgb(33, 45, 64);
+            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
+            else { theme = themePalettes["bluePalette"]; }
+            AdjustMode(isDarkMode);
+            LoadComboBoxItems();
             darkModeToolStripMenuItem.Checked = isDarkMode;
             httpClient = new HttpClient();
             timer = new TimersTimer(2000);
             timer.Elapsed += async (sender, e) => await UpdateLocationAndIP();
             timer.Elapsed += async (sender, e) => { await UpdateUIBasedOnConnection(); };
             timer.Start();
-            AdjustMode(isDarkMode);
+
 
 
         }
