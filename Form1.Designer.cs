@@ -1,4 +1,4 @@
-﻿namespace Singboxui_refactored
+namespace Singboxui_refactored
 {
     partial class Form1
     {
@@ -55,6 +55,16 @@
             русскийToolStripMenuItem = new ToolStripMenuItem();
             appearanceToolStripMenuItem = new ToolStripMenuItem();
             darkModeToolStripMenuItem = new ToolStripMenuItem();
+            colorsToolStripMenuItem = new ToolStripMenuItem();
+            blueToolStripMenuItem = new ToolStripMenuItem();
+            redToolStripMenuItem = new ToolStripMenuItem();
+            yellowToolStripMenuItem = new ToolStripMenuItem();
+            purpleToolStripMenuItem = new ToolStripMenuItem();
+            blueGrayToolStripMenuItem = new ToolStripMenuItem();
+            brownToolStripMenuItem = new ToolStripMenuItem();
+            tealToolStripMenuItem = new ToolStripMenuItem();
+            orangeToolStripMenuItem = new ToolStripMenuItem();
+            pinkToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
             bindingSource1 = new BindingSource(components);
             button6 = new Button();
@@ -237,6 +247,7 @@
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { languageToolStripMenuItem, appearanceToolStripMenuItem, aboutToolStripMenuItem });
+            toolStripMenuItem1.ForeColor = SystemColors.ActiveCaptionText;
             toolStripMenuItem1.Name = "toolStripMenuItem1";
             toolStripMenuItem1.Size = new Size(80, 20);
             toolStripMenuItem1.Text = "Main Menu";
@@ -246,7 +257,7 @@
             // 
             languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { englishToolStripMenuItem, فارسیToolStripMenuItem, 中文ToolStripMenuItem, русскийToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
-            languageToolStripMenuItem.Size = new Size(137, 22);
+            languageToolStripMenuItem.Size = new Size(180, 22);
             languageToolStripMenuItem.Text = "Language";
             // 
             // englishToolStripMenuItem
@@ -279,9 +290,9 @@
             // 
             // appearanceToolStripMenuItem
             // 
-            appearanceToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { darkModeToolStripMenuItem });
+            appearanceToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { darkModeToolStripMenuItem, colorsToolStripMenuItem });
             appearanceToolStripMenuItem.Name = "appearanceToolStripMenuItem";
-            appearanceToolStripMenuItem.Size = new Size(137, 22);
+            appearanceToolStripMenuItem.Size = new Size(180, 22);
             appearanceToolStripMenuItem.Text = "Appearance";
             // 
             // darkModeToolStripMenuItem
@@ -291,10 +302,81 @@
             darkModeToolStripMenuItem.Text = "Dark Mode";
             darkModeToolStripMenuItem.Click += darkModeToolStripMenuItem_Click;
             // 
+            // colorsToolStripMenuItem
+            // 
+            colorsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { blueToolStripMenuItem, redToolStripMenuItem, yellowToolStripMenuItem, purpleToolStripMenuItem, blueGrayToolStripMenuItem, brownToolStripMenuItem, tealToolStripMenuItem, orangeToolStripMenuItem, pinkToolStripMenuItem });
+            colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
+            colorsToolStripMenuItem.Size = new Size(132, 22);
+            colorsToolStripMenuItem.Text = "Colors";
+            colorsToolStripMenuItem.Click += colorsToolStripMenuItem_Click;
+            // 
+            // blueToolStripMenuItem
+            // 
+            blueToolStripMenuItem.BackColor = Color.Blue;
+            blueToolStripMenuItem.Name = "blueToolStripMenuItem";
+            blueToolStripMenuItem.Size = new Size(67, 22);
+            blueToolStripMenuItem.Click += blueToolStripMenuItem_Click;
+            // 
+            // redToolStripMenuItem
+            // 
+            redToolStripMenuItem.BackColor = Color.Red;
+            redToolStripMenuItem.Name = "redToolStripMenuItem";
+            redToolStripMenuItem.Size = new Size(67, 22);
+            redToolStripMenuItem.Click += redToolStripMenuItem_Click;
+            // 
+            // yellowToolStripMenuItem
+            // 
+            yellowToolStripMenuItem.BackColor = Color.Yellow;
+            yellowToolStripMenuItem.Name = "yellowToolStripMenuItem";
+            yellowToolStripMenuItem.Size = new Size(67, 22);
+            yellowToolStripMenuItem.Click += yellowToolStripMenuItem_Click;
+            // 
+            // purpleToolStripMenuItem
+            // 
+            purpleToolStripMenuItem.BackColor = Color.Purple;
+            purpleToolStripMenuItem.Name = "purpleToolStripMenuItem";
+            purpleToolStripMenuItem.Size = new Size(67, 22);
+            purpleToolStripMenuItem.Click += purpleToolStripMenuItem_Click;
+            // 
+            // blueGrayToolStripMenuItem
+            // 
+            blueGrayToolStripMenuItem.BackColor = Color.DarkBlue;
+            blueGrayToolStripMenuItem.Name = "blueGrayToolStripMenuItem";
+            blueGrayToolStripMenuItem.Size = new Size(67, 22);
+            blueGrayToolStripMenuItem.Click += blueGrayToolStripMenuItem_Click;
+            // 
+            // brownToolStripMenuItem
+            // 
+            brownToolStripMenuItem.BackColor = Color.SaddleBrown;
+            brownToolStripMenuItem.Name = "brownToolStripMenuItem";
+            brownToolStripMenuItem.Size = new Size(67, 22);
+            brownToolStripMenuItem.Click += brownToolStripMenuItem_Click;
+            // 
+            // tealToolStripMenuItem
+            // 
+            tealToolStripMenuItem.BackColor = Color.Teal;
+            tealToolStripMenuItem.Name = "tealToolStripMenuItem";
+            tealToolStripMenuItem.Size = new Size(67, 22);
+            tealToolStripMenuItem.Click += tealToolStripMenuItem_Click;
+            // 
+            // orangeToolStripMenuItem
+            // 
+            orangeToolStripMenuItem.BackColor = Color.Orange;
+            orangeToolStripMenuItem.Name = "orangeToolStripMenuItem";
+            orangeToolStripMenuItem.Size = new Size(67, 22);
+            orangeToolStripMenuItem.Click += orangeToolStripMenuItem_Click;
+            // 
+            // pinkToolStripMenuItem
+            // 
+            pinkToolStripMenuItem.BackColor = Color.Pink;
+            pinkToolStripMenuItem.Name = "pinkToolStripMenuItem";
+            pinkToolStripMenuItem.Size = new Size(67, 22);
+            pinkToolStripMenuItem.Click += pinkToolStripMenuItem_Click;
+            // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(137, 22);
+            aboutToolStripMenuItem.Size = new Size(180, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -426,6 +508,16 @@
         private Button button8;
         private CheckBox checkBox1;
         private NotifyIcon notifyIcon1;
+        private ToolStripMenuItem colorsToolStripMenuItem;
+        private ToolStripMenuItem blueToolStripMenuItem;
+        private ToolStripMenuItem redToolStripMenuItem;
+        private ToolStripMenuItem yellowToolStripMenuItem;
+        private ToolStripMenuItem purpleToolStripMenuItem;
+        private ToolStripMenuItem blueGrayToolStripMenuItem;
+        private ToolStripMenuItem brownToolStripMenuItem;
+        private ToolStripMenuItem tealToolStripMenuItem;
+        private ToolStripMenuItem orangeToolStripMenuItem;
+        private ToolStripMenuItem pinkToolStripMenuItem;
     }
 }
 
