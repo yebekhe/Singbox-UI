@@ -93,38 +93,40 @@ namespace Singboxui_refactored
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
             backgroundWorker.DoWork += BackgroundWorker_DoWork;
+            isDarkMode = Properties.Settings.Default.IsDarkMode;
             this.Resize += new System.EventHandler(this.Form1_Resize);
             //notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
             notifyIcon1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseClick);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
-            //if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
-            //{
-            //    Random random = new Random();
-            //    string fact = randomFacts[random.Next(0, randomFacts.Count)];
-            //    string message = $"Please run the application as Administrator\n" +
-            //                     "I know, we could make the app ask for UAC privilege but that can cause Windows Defender to detect the app as a trojan!\n" +
-            //                     "So please run the app as Administrator manually.\n" +
-            //                     $"Anyways, here's a random fact:\n\n{fact}\n\n" +
-            //                     "-Dave";
+            if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                Random random = new Random();
+                string fact = randomFacts[random.Next(0, randomFacts.Count)];
+                string message = $"Please run the application as Administrator\n" +
+                                 "I know, we could make the app ask for UAC privilege but that can cause Windows Defender to detect the app as a trojan!\n" +
+                                 "So please run the app as Administrator manually.\n" +
+                                 $"Anyways, here's a random fact:\n\n{fact}\n\n" +
+                                 "-Dave";
 
-            //    MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    Environment.Exit(0);
-            //}
-            AdjustMode(isDarkMode);
+                MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Environment.Exit(0);
+            }
             AdjustLanguage(string.IsNullOrEmpty(language) ? "english" : language);
+            themeName = Properties.Settings.Default.Theme ?? "bluePalette";
+            if (themePalettes.TryGetValue(themeName, out Color[] selectedPalette)) { theme = selectedPalette; }
             LoadComboBoxItems();
             this.BackColor = Color.FromArgb(238, 238, 238);
             this.ForeColor = Color.FromArgb(33, 45, 64);
             darkModeToolStripMenuItem.Checked = isDarkMode;
-            AdjustMode(isDarkMode);
             httpClient = new HttpClient();
             timer = new TimersTimer(2000);
             timer.Elapsed += async (sender, e) => await UpdateLocationAndIP();
             timer.Elapsed += async (sender, e) => { await UpdateUIBasedOnConnection(); };
-
             timer.Start();
+            AdjustMode(isDarkMode);
+
 
         }
         private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -278,7 +280,7 @@ namespace Singboxui_refactored
                 {
                     case Button button:
                         button.BackColor = isDarkMode ? theme[0] : theme[0];
-                        button.ForeColor = isDarkMode ? Color.White : Color.White;
+                        button.ForeColor = isDarkMode ? Color.White : Color.Black;
                         break;
 
                     case Label label:
@@ -286,15 +288,15 @@ namespace Singboxui_refactored
                         break;
 
                     case TextBox textBox:
-                        textBox.BackColor = isDarkMode ? theme[0] : theme[2];
-                        textBox.ForeColor = isDarkMode ? Color.White : Color.White;
+                        textBox.BackColor = isDarkMode ? theme[0] : theme[0];
+                        textBox.ForeColor = isDarkMode ? Color.White : Color.Black;
                         break;
 
                     default:
                         break;
                     case ComboBox comboBox:
-                        comboBox.BackColor = isDarkMode ? theme[0] : theme[2];
-                        comboBox.ForeColor = isDarkMode ? Color.White : Color.White;
+                        comboBox.BackColor = isDarkMode ? theme[0] : theme[0];
+                        comboBox.ForeColor = isDarkMode ? Color.White : Color.Black;
                         break;
                 }
             }
