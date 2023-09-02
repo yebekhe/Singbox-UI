@@ -43,6 +43,10 @@ namespace Singboxui_refactored
         string language = Properties.Settings.Default.Language;
         private TimersTimer timer;
         private HttpClient httpClient;
+        bool isIpHidden = Properties.Settings.Default.IsIpHidden1;
+        string dns = Properties.Settings.Default.DNS;
+
+
         List<string> randomFacts = new List<string>
         {
             "Victorians once used leeches to predict the weather.",
@@ -106,7 +110,7 @@ namespace Singboxui_refactored
                 string fact = randomFacts[random.Next(0, randomFacts.Count)];
                 string message = $"Please run the application as Administrator\n" +
                                  "I know, we could make the app ask for UAC privilege but that can cause Windows Defender to detect the app as a trojan!\n" +
-                                 "So please run the app as Administrator manually.\n" +
+                                 "So please run the app as Administrator manually.\nAlso: We don't need the UAC access, Sing-Box Core needs it!\n" +
                                  $"Anyways, here's a random fact:\n\n{fact}\n\n" +
                                  "-Dave";
 
@@ -204,7 +208,26 @@ namespace Singboxui_refactored
             }
         }
 
+        static void ModifyOverrideAddress(string newAddress)
+        {
+            string configPath = "config.json";
+            string text = File.ReadAllText(configPath, Encoding.UTF8);
+            JObject configData = JObject.Parse(text);
 
+            JToken inbounds = configData["inbounds"];
+            foreach (var inbound in inbounds)
+            {
+                // Checking if this object has "override_port": 53
+                if ((int?)inbound["override_port"] == 53)
+                {
+                    // Changing the "override_address"
+                    inbound["override_address"] = newAddress;
+                    break;
+                }
+            }
+
+            File.WriteAllText(configPath, configData.ToString(), new UTF8Encoding(false));
+        }
 
         static void ModifyConfig(bool flag)
         {
@@ -333,7 +356,9 @@ namespace Singboxui_refactored
                    {"exitsure" , "Are you sure you want to exit the SingBoxUI?"},
                    {"exiting" , "Exiting SingBoxUI..."},
                    {"secretissue" , "Either Secret code is wrong or there's a connection problem!"},
-                   {"refresh" , "Refresh"},
+                   {"hideip" , "Show IP Data"},
+                   {"showip" , "Hide IP Data"},
+                   {"dns", "DNS" },
                    {"sublink" , "Subscription Link: "},
                    {"localconfig" , "Use Local Config"},
                    {"vpnmode" , "VPN Mode (Reconnection Required)"},
@@ -360,6 +385,9 @@ namespace Singboxui_refactored
            {
     "persian", new Dictionary<string, string>
                {
+                   {"hideip" , "نمایش  آی‌پی"},
+                   {"showip" , "پنهان کردن آی‌پی"},
+                   {"dns", "دی ان اس (DNS)" },
                    {"deleteall" , "حذف همه"},
                    {"colors" , "رنگبندی" },
                    {"appearance" , "ظاهر برنامه" },
@@ -399,6 +427,9 @@ namespace Singboxui_refactored
                        {
     "russian", new Dictionary<string, string>
                {
+                   {"hideip" , "Показать данные IP"},
+                   {"dns", "DNS" },
+                   {"showip" , "Скрыть данные IP"},
                    {"appearance" , "Внешний вид"},
                    {"colors" , "Цвета" },
                    { "singboxconnected", "Пользователь подключен к sing-box." },
@@ -438,6 +469,9 @@ namespace Singboxui_refactored
                                    {
     "chinese", new Dictionary<string, string>
                {
+                   {"hideip" , "显示IP数据"},
+                   {"dns", "DNS" },
+                   {"showip" , "隐藏IP数据"},
                    {"appearance" , "外观"},
                    {"colors" , "颜色" },
                    { "singboxconnected", "用户已连接到sing-box。" },
@@ -500,11 +534,31 @@ namespace Singboxui_refactored
             colorsToolStripMenuItem.Text = GetLocalizedString(language, "colors");
             label1.Text = "Location | IP :";
             label2.Text = "Updating..";
-            button1.Text = GetLocalizedString(language, "refresh");
+            dns = Properties.Settings.Default.DNS;
+            if (dns == "")
+            {
+                textBox3.Text = "8.8.8.8";
+            }
+            else
+            {
+                textBox3.Text = dns;
+            }
+
+            isIpHidden = Properties.Settings.Default.IsIpHidden1;
+            if (isIpHidden)
+            {
+                button1.Text = GetLocalizedString(language, "hideip");
+            }
+            else
+            {
+                button1.Text = GetLocalizedString(language, "showip");
+            }
+            //button1.Text = GetLocalizedString(language, "refresh");
             button2.Text = "Proxy Mode";
             label3.Text = GetLocalizedString(language, "vpnmodeon");
             label4.Text = GetLocalizedString(language, "proxyport") + " : 2080";
             label5.Text = GetLocalizedString(language, "localconfig");
+            label8.Text = GetLocalizedString(language, "dns");
             label6.Text = "Secret Key";
             textBox1.Text = "YEBEKHE";
             textBox2.Text = "https://raw.githubusercontent.com/yebekhe/TelegramV2rayCollector/main/singbox/sfasfi/reality.json";
@@ -608,8 +662,15 @@ namespace Singboxui_refactored
 
                     this.Invoke((MethodInvoker)delegate
                     {
-                        label2.Text = $"{flagEmoji} {country} | {ip}";
-
+                        isIpHidden = Properties.Settings.Default.IsIpHidden1;
+                        if (isIpHidden)
+                        {
+                            label2.Text = $"{flagEmoji} {country}";
+                        }
+                        else
+                        {
+                            label2.Text = $"{flagEmoji} {country} | {ip}";
+                        }
 
                     });
                 }
@@ -830,6 +891,7 @@ namespace Singboxui_refactored
             {
                 if (label4.Visible) { ModifyConfig(false); }
                 else { ModifyConfig(false); ModifyConfig(true); }
+                ModifyOverrideAddress(textBox3.Text);
                 try
                 {
                     toolStripStatusLabel1.Text = "Running sing-box.exe as administrator...";
@@ -959,7 +1021,11 @@ namespace Singboxui_refactored
 
         private void button1_Click(object sender, EventArgs e)
         {
-            UpdateLocationAndIP();
+            isIpHidden = Properties.Settings.Default.IsIpHidden1;
+            isIpHidden = !isIpHidden;
+            Properties.Settings.Default.IsIpHidden1 = isIpHidden;
+            Properties.Settings.Default.Save();
+            button1.Text = isIpHidden ? GetLocalizedString(language, "hideip") : GetLocalizedString(language, "showip");
         }
 
 
@@ -1241,5 +1307,16 @@ namespace Singboxui_refactored
 
         }
 
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            dns = textBox3.Text;
+            Properties.Settings.Default.DNS = dns;
+            Properties.Settings.Default.Save();
+        }
     }
 }
