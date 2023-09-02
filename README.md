@@ -8,10 +8,11 @@ SingBoxUI is a graphical user interface application that allows users to connect
 - Use Local Config: Choose to use a local configuration file for customization.
 - Display IP and Location: View your IP address and location information within the application.
 - Save Subscription Link: Save your subscription link for easy access.
+- Choose between saved subscription links
 - Open SingBox Dashboard: Open the SingBox dashboard directly from the application.
-- Automatic Administrator Privileges: SingBoxUI automatically requests administrator privileges for a seamless user experience.
 - Latest Version Detection: Automatically detects and downloads the latest version of SingBox.
 - Error Handling: Provides informative error messages in case of any issues.
+- DNS Override: Overriding DNS of the config.json
 
 
 
