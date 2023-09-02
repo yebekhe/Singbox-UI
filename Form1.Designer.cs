@@ -72,6 +72,8 @@ namespace Singboxui_refactored
             button8 = new Button();
             checkBox1 = new CheckBox();
             notifyIcon1 = new NotifyIcon(components);
+            textBox3 = new TextBox();
+            label8 = new Label();
             statusStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)bindingSource1).BeginInit();
@@ -97,7 +99,7 @@ namespace Singboxui_refactored
             // 
             label1.AutoSize = true;
             label1.ForeColor = SystemColors.WindowText;
-            label1.Location = new Point(11, 341);
+            label1.Location = new Point(11, 367);
             label1.Name = "label1";
             label1.Size = new Size(78, 15);
             label1.TabIndex = 1;
@@ -108,7 +110,7 @@ namespace Singboxui_refactored
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.Location = new Point(102, 341);
+            label2.Location = new Point(102, 367);
             label2.Name = "label2";
             label2.Size = new Size(62, 13);
             label2.TabIndex = 2;
@@ -117,7 +119,7 @@ namespace Singboxui_refactored
             // 
             // button1
             // 
-            button1.Location = new Point(352, 337);
+            button1.Location = new Point(352, 363);
             button1.Name = "button1";
             button1.Size = new Size(100, 23);
             button1.TabIndex = 3;
@@ -127,7 +129,7 @@ namespace Singboxui_refactored
             // 
             // button2
             // 
-            button2.Location = new Point(352, 311);
+            button2.Location = new Point(352, 337);
             button2.Name = "button2";
             button2.Size = new Size(100, 23);
             button2.TabIndex = 4;
@@ -138,7 +140,7 @@ namespace Singboxui_refactored
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(11, 315);
+            label3.Location = new Point(11, 341);
             label3.Name = "label3";
             label3.Size = new Size(201, 15);
             label3.TabIndex = 5;
@@ -148,7 +150,7 @@ namespace Singboxui_refactored
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(228, 315);
+            label4.Location = new Point(228, 341);
             label4.Name = "label4";
             label4.Size = new Size(92, 15);
             label4.TabIndex = 6;
@@ -257,7 +259,7 @@ namespace Singboxui_refactored
             // 
             languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { englishToolStripMenuItem, فارسیToolStripMenuItem, 中文ToolStripMenuItem, русскийToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
-            languageToolStripMenuItem.Size = new Size(180, 22);
+            languageToolStripMenuItem.Size = new Size(137, 22);
             languageToolStripMenuItem.Text = "Language";
             // 
             // englishToolStripMenuItem
@@ -292,7 +294,7 @@ namespace Singboxui_refactored
             // 
             appearanceToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { darkModeToolStripMenuItem, colorsToolStripMenuItem });
             appearanceToolStripMenuItem.Name = "appearanceToolStripMenuItem";
-            appearanceToolStripMenuItem.Size = new Size(180, 22);
+            appearanceToolStripMenuItem.Size = new Size(137, 22);
             appearanceToolStripMenuItem.Text = "Appearance";
             // 
             // darkModeToolStripMenuItem
@@ -376,7 +378,7 @@ namespace Singboxui_refactored
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(180, 22);
+            aboutToolStripMenuItem.Size = new Size(137, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -393,7 +395,7 @@ namespace Singboxui_refactored
             // button7
             // 
             button7.AutoSize = true;
-            button7.Location = new Point(12, 389);
+            button7.Location = new Point(12, 401);
             button7.Name = "button7";
             button7.Size = new Size(200, 25);
             button7.TabIndex = 21;
@@ -404,7 +406,7 @@ namespace Singboxui_refactored
             // button8
             // 
             button8.AutoSize = true;
-            button8.Location = new Point(252, 389);
+            button8.Location = new Point(252, 401);
             button8.Name = "button8";
             button8.Size = new Size(200, 25);
             button8.TabIndex = 22;
@@ -428,6 +430,26 @@ namespace Singboxui_refactored
             notifyIcon1.Text = "SingboxUI";
             notifyIcon1.Visible = true;
             // 
+            // textBox3
+            // 
+            textBox3.ForeColor = Color.White;
+            textBox3.Location = new Point(352, 310);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(100, 23);
+            textBox3.TabIndex = 24;
+            textBox3.Text = "8.8.8.8";
+            textBox3.TextAlign = HorizontalAlignment.Center;
+            textBox3.TextChanged += textBox3_TextChanged;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(11, 314);
+            label8.Name = "label8";
+            label8.Size = new Size(30, 15);
+            label8.TabIndex = 25;
+            label8.Text = "DNS";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -435,6 +457,8 @@ namespace Singboxui_refactored
             AutoSize = true;
             BackColor = Color.White;
             ClientSize = new Size(464, 461);
+            Controls.Add(label8);
+            Controls.Add(textBox3);
             Controls.Add(checkBox1);
             Controls.Add(button8);
             Controls.Add(button7);
@@ -519,6 +543,8 @@ namespace Singboxui_refactored
         private ToolStripMenuItem tealToolStripMenuItem;
         private ToolStripMenuItem orangeToolStripMenuItem;
         private ToolStripMenuItem pinkToolStripMenuItem;
+        private TextBox textBox3;
+        private Label label8;
     }
 }
 
